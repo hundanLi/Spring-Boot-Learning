@@ -1,0 +1,122 @@
+spring:
+  main:
+    log-startup-info: false
+  application:
+    name: myproject
+  mvc:
+    static-path-pattern: /static/**  # /static/banner.jpg 路径将访问到 /static/banner.jpg文件
+
+  resources:
+    static-locations: classpath:/static/
+
+  banner:
+    location: banner.txt
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/myproject?serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+
+    quartz:
+      type: com.zaxxer.hikari.HikariDataSource
+      jdbc-url: jdbc:mysql://localhost:3306/quartz?serverTimezone=Asia/Shanghai
+      username: root
+      password: root
+
+  redis:
+    host: localhost
+    port: 6379
+
+  elasticsearch:
+    rest:
+      uris: http://127.0.0.1:9200 # 默认: http://localhost:9200
+
+  cache:
+    type: redis
+    redis:
+      key-prefix: myproject
+      time-to-live: 30m
+    cache-names: cache-1,cache-2,cache-3
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: myproject
+
+  # java mail 配置
+  mail:
+    host: smtp.aliyun.com
+    username: *
+    password: *
+    port: 465
+    properties:
+      mail.smtp.connectiontimeout: 5000
+      mail.smtp.timeout: 3000
+      mail.smtp.writetimeout: 5000
+      mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+      mail.smtp.socketFactory.port: 465
+      mail.smtp.port: 465
+
+  # quartz
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: always
+
+
+
+server:
+  port: 8080
+  undertow:
+    url-charset: UTF-8
+    worker-threads: 8
+#  servlet:
+#    context-path: /myproject
+
+
+
+my:
+  config:
+    name: hundanli
+    birth: 2010/09/03
+    map: {k1: v2, k2: v2}
+    list: [cat, dog, duck]
+
+logging:
+  file:
+#    name: ./logs/${spring.application.name}.log
+    path: ./logs
+  level:
+    root: info
+    org.apache.kafka: error
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+
+rocketmq:
+  producer:
+    group-name: group1
+  consumer:
+    group-name: group1
+    topic: test
+
+
+management:
+  endpoints:
+    enabled-by-default: true  # 开启所有监控功能，shutdown除外
+    web:
+      exposure:
+        include: "*"  # 暴露所有HTTP访问路径
+      base-path: /management
+  server:
+    port: 8000
+    address: 127.0.0.1
+    ssl:
+      enabled: false
+
+acme:
+  name: hundanli
+  enable: true
+
